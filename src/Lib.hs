@@ -65,8 +65,23 @@ bindITree (Vis t) k = Vis (mapPfun (`bindITree` k) t);
 bindITree (Sil t) k = Sil (bindITree t k);
 bindITree (Ret v) k = Sil (k v);
 
+instance Prelude.Functor (ITree a) where 
+    fmap f = (`bindITree` (Ret . f))
+
+instance Prelude.Applicative (ITree a) where
+    pure = Ret
+    (<*>) = bindITree
+
+instance Prelude.Monad (ITree a) where
+    return = Ret
+    (>>=) = bindITree
+
+--instance Prelude.Monad (ITree a) where
+
+
+
 zeroPFun :: forall a b. Pfun a b;
-zeroPFun = PfunOfAList [];
+zeroPFun = PfunOfHashMap L.empty;
 
 plusPFun :: forall a b. (Eq a, Hashable a) => Pfun a b -> Pfun a b -> Pfun a b;
 plusPFun (PfunOfAList f) (PfunOfHashMap g) = PfunOfHashMap (L.union (L.fromList f) g);
