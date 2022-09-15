@@ -70,7 +70,7 @@ instance Prelude.Functor (ITree a) where
 
 instance Prelude.Applicative (ITree a) where
     pure = Ret
-    (<*>) = bindITree
+    (<*>) = Prelude.undefined
 
 instance Prelude.Monad (ITree a) where
     return = Ret
@@ -96,7 +96,6 @@ uminusSet (Set xs) = Coset xs;
 
 pdomRes :: forall a b. (Eq a, Hashable a) => Set a -> Pfun a b -> Pfun a b;
 pdomRes = restrict 
---pdomRes a m = PfunOfAList (restrict a m);
 
 pfunGet :: (Eq a, Hashable a) =>  a -> Pfun a b -> Maybe b
 pfunGet x (PfunOfHashMap xs) = L.lookup x xs
